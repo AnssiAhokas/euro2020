@@ -132,19 +132,15 @@ matches <- na.omit(matches)
 matches <- matches %>% 
   mutate(diff_goal_abs = team1goals - team2goals,
          diff_goal_ratio = team1goals / team2goals,
-         diff_rank = team1rank - team2rank,
+         diff_rank = (team1rank - team2rank) * (-1),
          diff_point_abs = team1points - team2points,
          diff_point_ratio = team1points / team2points)
 
+## Save the data to CSV so we can use it in creating models
+write.csv(matches, paste0(here::here(), "/data/data_for_models.csv"))
 
-
-
-
-
-
-## Check
-plot(matches$diff_point_ratio, matches$diff_goal_abs)
-model <- lm(data = matches, diff_point_ratio ~ diff_goal_abs)
+## Just check the data quality with a single model
+model <- lm(data = matches %>% filter(team1 == "Spain"), diff_goal_abs ~ diff_point_ratio)
 summary(model)
 
 
