@@ -130,9 +130,22 @@ matches <- na.omit(matches)
 
 ## Create a variables to track differences between team ranks and points
 matches <- matches %>% 
-  
+  mutate(diff_goal_abs = team1goals - team2goals,
+         diff_goal_ratio = team1goals / team2goals,
+         diff_rank = team1rank - team2rank,
+         diff_point_abs = team1points - team2points,
+         diff_point_ratio = team1points / team2points)
 
 
+
+
+
+
+
+## Check
+plot(matches$diff_point_ratio, matches$diff_goal_abs)
+model <- lm(data = matches, diff_point_ratio ~ diff_goal_abs)
+summary(model)
 
 
 
