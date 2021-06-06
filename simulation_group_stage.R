@@ -13,9 +13,6 @@ data <- read.csv(paste0(here::here(), "/data/data_for_simulation.csv"), sep = ",
 
 simulate_group_stage <- function(data, randomness){
   
-  ## Randomness not yet added!
-  randomness <- 0.5
-
   ## Start the simulation
   ## Get the raw results of the matches
   data$team1pred_raw <- rnorm(1, mean = data$team1b0, sd = data$team1b0std * randomness) + 
@@ -144,19 +141,29 @@ simulate_group_stage <- function(data, randomness){
     arrange(desc(points), desc(summary_teampred_raw)) %>% 
     top_n(4)
   
+  ## Take a unique code of 3rd places
+  code <- data_3rd %>% 
+    select(group) %>% 
+    distinct() %>% 
+    arrange(group)
+  code <- apply(code, 1, paste, collapse="")
+  code <- do.call(paste, c(as.list(code), sep = ""))
+  
   data <- data %>% 
     filter(rank %in% c(1, 2)) %>% 
-    select(team, group, rank)
+    select(team, group, rank) 
   
   data <- rbind(data, data_3rd %>% select(team, group, rank)) %>% 
     arrange(group, rank)
-
+  
+  data <- list(data, code)
+  
   ## Just check the function is working
   return(data)
 
 }
 
-final_data <- simulate_group_stage(data = data, randomness = 0.2)
+final_data <- simulate_group_stage(data = data, randomness = 0.5)
 
 
 
