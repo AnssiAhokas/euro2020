@@ -13,6 +13,10 @@ teams_data <- read.csv(paste0(here::here(), "/data/teams.csv"), sep = ",")
 matches_data <- readxl::read_excel(paste0(here::here(), "/data/euro2020_matches.xlsx"))
 
 simulate_r24 <- function(teams_data, matches_data, randomness){
+  
+  ## Filter matches data
+  matches_data <- matches_data %>%
+    filter(stage == "group")
 
   ## Join the datasets
   data <- matches_data %>%
@@ -170,7 +174,7 @@ simulate_r24 <- function(teams_data, matches_data, randomness){
 
 }
 
-final_data <- simulate_r24(teams_data = teams_data, matches_data = matches_data, randomness = 0)
+final_data_r24 <- simulate_r24(teams_data = teams_data, matches_data = matches_data, randomness = 0)
 
 
 
