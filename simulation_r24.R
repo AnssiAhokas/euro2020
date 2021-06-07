@@ -9,9 +9,24 @@
 library(tidyverse)
 library(purrr)
 
-data <- read.csv(paste0(here::here(), "/data/data_for_simulation.csv"), sep = ",")
+teams_data <- read.csv(paste0(here::here(), "/data/teams.csv"), sep = ",")
+matches_data <- readxl::read_excel(paste0(here::here(), "/data/euro2020_matches.xlsx"))
 
-simulate_group_stage <- function(data, randomness){
+simulate_r24 <- function(teams_data, matches_data, randomness){
+
+  ## Join the datasets
+  data <- matches_data %>%
+    left_join(x = ., y = teams_data, by = c("team1" = "team")) %>%
+    left_join(x = ., y = teams_data, by = c("team2" = "team")) %>%
+    select(-X.x, -X.y)
+
+  names(data) <- c("stage", "group", "match_id", "team1", "team2",
+                 "team1b0", "team1b1", "team1b0std", "team1b1std", "team1points",
+                 "team2b0", "team2b1", "team2b0std", "team2b1std", "team2points")
+
+  ## Create a diff_point_ratio (dpr) variable for simulation prediction
+  data$team1dpr <- data$team1points / data$team2points
+  data$team2dpr <- data$team2points / data$team1points
 
   ## Start the simulation
   ## Get the raw results of the matches
@@ -147,13 +162,15 @@ simulate_group_stage <- function(data, randomness){
            role = paste0(group, rank, sep = "")) %>% 
     select(team, role, position)
 
+  ## Write a CSV file for the simulations
+  write.csv(data, paste0(here::here(), "/data/r24.csv"))
 
   ## Just check the function is working
   return(data)
 
 }
 
-final_data <- simulate_group_stage(data = data, randomness = 0.5)
+final_data <- simulate_r24(teams_data = teams_data, matches_data = matches_data, randomness = 0)
 
 
 

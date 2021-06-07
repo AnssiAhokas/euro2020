@@ -9,8 +9,8 @@ library(data.table)
 library(broom)
 
 ## Upload the raw data
-matches_raw <- read.csv(paste0(here::here(), "/data/matches.csv"), sep = ",")
-rankings_raw <- read.csv(paste0(here::here(), "/data/rankings.csv"), sep = ",")
+matches_raw <- read.csv(paste0(here::here(), "/data/all_matches.csv"), sep = ",")
+rankings_raw <- read.csv(paste0(here::here(), "/data/all_rankings.csv"), sep = ",")
 
 ## First we clean the rankings data
 rankings <- rankings_raw
@@ -171,30 +171,17 @@ models <- models %>%
   select(-model)
 
 ## Upload group stages matches
-group_stage_matches <- readxl::read_excel(paste0(here::here(), "/data/group_stage_matches.xlsx"))
+#group_stage_matches <- readxl::read_excel(paste0(here::here(), "/data/group_stage_matches.xlsx"))
 
-## Join the matches and models
-data <- group_stage_matches %>%
-  left_join(x = ., y = models, by = c("team1" = "country")) %>%
-  left_join(x = ., y = models, by = c("team2" = "country"))
-
-## Join the latest rankings
-data <- data %>%
-  left_join(x = ., y = latest_rankings, by = c("team1" = "country_full")) %>%
-  left_join(x = ., y = latest_rankings, by = c("team2" = "country_full"))
+## Join the models and latest rankings
+data <- models %>%
+  left_join(x = ., y = latest_rankings, by = c("country" = "country_full"))
 
 ## Rename columns
-names(data) <- c("stage", "group", "match_id", "team1", "team2",
-                 "team1b0", "team1b1", "team1b0std", "team1b1std",
-                 "team2b0", "team2b1", "team2b0std", "team2b1std",
-                 "team1points", "team2points")
-
-## Create a diff_point_ratio (dpr) variable for simulation prediction
-data$team1dpr <- data$team1points / data$team2points
-data$team2dpr <- data$team2points / data$team1points
+names(data) <- c("team", "b0", "b1", "b0std", "b1std", "total_points")
 
 ## Write a CSV file for the simulations
-write.csv(data, paste0(here::here(), "/data/data_for_simulation.csv"))
+write.csv(data, paste0(here::here(), "/data/teams.csv"))
 
 
 
