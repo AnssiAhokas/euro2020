@@ -142,7 +142,10 @@ simulate_group_stage <- function(data, randomness){
 
   data <- data %>%
     left_join(x = ., y = data_3rd, on = c("team" = "team")) %>%
-    mutate(position = ifelse(rank %in% c(1, 2) | qualified == 1, NA, "16-24"))
+    mutate(help = ifelse(rank %in% c(1, 2) | qualified == 1, 1, 0)) %>% 
+    mutate(position = ifelse(is.na(help) == TRUE, "16-24", NA),
+           role = paste0(group, rank, sep = "")) %>% 
+    select(team, role, position)
 
 
   ## Just check the function is working
