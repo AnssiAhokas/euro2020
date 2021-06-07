@@ -155,7 +155,7 @@ simulate_r16 <- function(teams_data, matches_data, r24_data, randomness){
 final_data_r16 <- simulate_r16(teams_data = teams_data, 
                          matches_data = matches_data, 
                          r24_data = r24_data, 
-                         randomness = 0)
+                         randomness = 1)
 
 
 

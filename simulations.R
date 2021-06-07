@@ -1,0 +1,6 @@
+simulate_r24(teams_data = teams_data, matches_data = matches_data, randomness = 0)
+simulate_r16(teams_data = teams_data, matches_data = matches_data, r24_data = r24_data, randomness = 0)
+simulate_r8(teams_data = teams_data, matches_data = matches_data, r16_data = r16_data, randomness = 0)
+simulate_r4(teams_data = teams_data, matches_data = matches_data, r8_data = r8_data, randomness = 0)
+final_data <- simulate_r2(teams_data = teams_data, matches_data = matches_data, r4_data = r4_data, randomness = 0)
+print(final_data)

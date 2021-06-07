@@ -1,11 +1,9 @@
 
 teams_data <- read.csv(paste0(here::here(), "/data/teams.csv"), sep = ",")
 matches_data <- readxl::read_excel(paste0(here::here(), "/data/euro2020_matches.xlsx"))
-r16_data <- read.csv(paste0(here::here(), "/data/r24.csv"), sep = ",")
+r16_data <- read.csv(paste0(here::here(), "/data/r16.csv"), sep = ",")
 
 simulate_r8 <- function(teams_data, matches_data, r16_data, randomness){
-  
-  #randomness <- 0
   
   library(tidyverse)
   
@@ -52,7 +50,7 @@ simulate_r8 <- function(teams_data, matches_data, r16_data, randomness){
     mutate(role = ifelse(winner == team, 
                          paste("w", as.character(match_id), sep = ""), 
                          paste("l", as.character(match_id), sep = "")),
-           position = ifelse(winner == team, NA, "16-8")) %>% 
+           position = ifelse(winner == team, NA, "8-4")) %>% 
     arrange(match_id) %>% 
     select(team, role, position)
   
@@ -66,10 +64,10 @@ simulate_r8 <- function(teams_data, matches_data, r16_data, randomness){
   
 }
 
-final_data_r16 <- simulate_r16(teams_data = teams_data, 
+final_data_r8 <- simulate_r8(teams_data = teams_data, 
                                matches_data = matches_data, 
-                               r24_data = r24_data, 
-                               randomness = 0)
+                               r16_data = r16_data, 
+                               randomness = 1)
 
 
 

@@ -174,7 +174,7 @@ simulate_r24 <- function(teams_data, matches_data, randomness){
 
 }
 
-final_data_r24 <- simulate_r24(teams_data = teams_data, matches_data = matches_data, randomness = 0)
+final_data_r24 <- simulate_r24(teams_data = teams_data, matches_data = matches_data, randomness = 1)
 
 
 
