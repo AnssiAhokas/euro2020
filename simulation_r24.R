@@ -123,7 +123,7 @@ simulate_r24 <- function(teams_data, matches_data, randomness){
 
   ## Join the raw result data with the group data
   data <- data %>%
-    left_join(x = ., y = data_stored, on = c("id" = "id"))
+    left_join(x = ., y = data_stored, by = c("id" = "id"))
 
   ## Additional points in tie situation
   data$additional_points <- ifelse(data$tie == 1 & data$team == data$winner, 0.4,
@@ -149,14 +149,14 @@ simulate_r24 <- function(teams_data, matches_data, randomness){
 
   ## Join the raw result data with the group data
   data_3rd <- data_3rd %>%
-    left_join(x = ., y = data_stored2, on = c("team" = "team")) %>%
+    left_join(x = ., y = data_stored2, by = c("team" = "team")) %>%
     arrange(desc(points), desc(summary_teampred_raw)) %>%
     top_n(4) %>%
     select(team) %>%
     mutate(qualified = 1)
 
   data <- data %>%
-    left_join(x = ., y = data_3rd, on = c("team" = "team")) %>%
+    left_join(x = ., y = data_3rd, by = c("team" = "team")) %>%
     mutate(help = ifelse(rank %in% c(1, 2) | qualified == 1, 1, 0)) %>% 
     mutate(position = ifelse(is.na(help) == TRUE, "16-24", NA),
            role = paste0(group, rank, sep = "")) %>% 
