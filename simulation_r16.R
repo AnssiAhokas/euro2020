@@ -1,7 +1,7 @@
 
-teams_data <- read.csv(paste0(here::here(), "/data/teams.csv"), sep = ",")
-matches_data <- readxl::read_excel(paste0(here::here(), "/data/euro2020_matches.xlsx"))
-r24_data <- read.csv(paste0(here::here(), "/data/r24.csv"), sep = ",")
+#teams_data <- read.csv(paste0(here::here(), "/data/teams.csv"), sep = ",")
+#matches_data <- readxl::read_excel(paste0(here::here(), "/data/euro2020_matches.xlsx"))
+#r24_data <- read.csv(paste0(here::here(), "/data/r24.csv"), sep = ",")
 
 simulate_r16 <- function(teams_data, matches_data, r24_data, randomness){
 
@@ -152,10 +152,10 @@ simulate_r16 <- function(teams_data, matches_data, r24_data, randomness){
   
 }
 
-final_data_r16 <- simulate_r16(teams_data = teams_data, 
-                         matches_data = matches_data, 
-                         r24_data = r24_data, 
-                         randomness = 1)
+#final_data_r16 <- simulate_r16(teams_data = teams_data, 
+ #                        matches_data = matches_data, 
+  #                       r24_data = r24_data, 
+   #                      randomness = 1)
 
 
 
